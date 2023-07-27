@@ -14,7 +14,7 @@ export class FormComponent implements OnInit {
     constructor(private svc: RequestService, public router: Router, private formBuilder: FormBuilder) {}
 
     form: FormGroup;
-    private formSumitAttempt: boolean;
+    formSumitAttempt: boolean;
     comboboxData: any;
 
     isFieldValid(field: string) {
@@ -24,34 +24,15 @@ export class FormComponent implements OnInit {
         );
       }
       
-      displayFieldCss(field: string) {
-        return {
-          'has-error': this.isFieldValid(field),
-          'has-feedback': this.isFieldValid(field)
-        };
-      }
-    
-    get fieldOne() {
-        return this.form.controls.fieldOne as FormControl   
-    }
-
-    get fieldSelect() {
-        return this.form.controls.fieldSelect as FormControl   
-    } 
-
-    get fieldCheck() {
-        return this.form.controls.fieldCheck as FormControl   
-    } 
-    
     ngOnInit(): void {
         this.svc.getComboxFields().subscribe(data => {
             this.comboboxData = data
         })
 
         this.form = this.formBuilder.group({
-            fieldOne: [null, [Validators.required, myValidator]],
-            fieldSelect: [null, [Validators.required]],
-            fieldCheck: [null, [Validators.required]],
+            fieldOne: [null, [Validators.required, myValidatorField]],
+            fieldSelect: [null, Validators.required],
+            fieldCheck: [null, [Validators.required, myValidatorCheckbox]],
           });
     }
 
@@ -69,11 +50,21 @@ export class FormComponent implements OnInit {
       }
 }
  
-// Функция валидации
-function myValidator(formControl: FormControl) {
+// Функция валидации поля
+function myValidatorField(formControl: FormControl) {
 
     if (formControl.value < 18 || formControl.value > 120) {
-        return { myValidator: { message: 'Неправельный диапозон' } }
+        return { myValidator: { message:'Необходимо число от 18 до 120' } }
+    }
+
+    return null
+}
+
+// Функция валидации checkbox
+function myValidatorCheckbox(formControl: FormControl) {
+
+    if (formControl.value === false) {
+        return { myValidatorCheckbox: { message: 'Необходимо дать согласие на обработку данных' } }
     }
 
     return null

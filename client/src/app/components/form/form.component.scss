@@ -1,4 +1,179 @@
 .form-fields {
-    display: flex;
-    justify-content: space-around;
+    width: 800px;
+    height: 400px;
+
+    padding: 20px;
+
+    border-radius: 25px;
+    background-color: rgb(188, 218, 218);
+
+    h3 {
+        font-size: x-large;
+
+        margin: 20px 20px;
+    }
+
+    .group_input {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+
+        input {
+            padding: 10px;
+            margin: 10px 10px;
+            border: 1px solid rgb(165, 187, 187);
+            border-radius: 5px;
+            -webkit-box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.2);
+            -moz-box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.2);
+            box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.2);
+        }
+
+        input:focus {
+            border: 1px solid rgba(51, 153, 204, 0.3);
+            box-shadow: 2px 1px 2px 0 rgba(51, 153, 204, 0.3);
+        }
+    
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+           margin: 0;
+        }
+    
+        select {
+            width: 200px;
+            padding: 10px;
+            margin:10px 10px;
+            border: 1px solid rgb(165, 187, 187);
+            border-radius: 5px;
+            -webkit-box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.2);
+            -moz-box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.2);
+            box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.2);
+        }
+    
+        label {
+            display: flex;
+            position: relative;
+            cursor: pointer;
+    
+            input[type=checkbox] {
+                position: absolute;
+                opactiy: 0;
+                width:0; 
+                height:0;
+          }
+    
+          span {
+            position: absolute;
+            top:0;
+            left:0;
+            width:20px; 
+            height:20px;
+            background-color: #eeecec;
+            transition: .3s background-color;
+          }
+    
+          span:after {
+            content: "";
+            position: absolute;
+            display: none;
+            
+            left: 6px;
+            top: 2px;
+            width: 6px;
+            height: 12px;
+            border: solid white;
+            border-width: 0 3px 3px 0;
+            transform: rotate(45deg);
+          }
+    
+          &:hover span {
+            background-color: #ccc;
+          }
+    
+          input:checked ~ span {
+            background-color: #2eaadc;
+          }
+
+          input:checked ~ span:after {
+            display:block;
+          }
+
+          p {
+            padding-left: 40px;
+            font-size: medium;
+          }
+        }
+
+        .form-field__three {
+            width: 50%;
+        }
+
+        .errors {
+            color: red;
+            height: 25px;
+            padding-left: 15px;
+        }
+
+    }
+
+    .from-field__four {
+        display: flex;
+
+        button {
+            width: 150px;
+            height: 35px;
+            margin: 5px 10px;
+
+            border-radius: 5px;
+            -webkit-box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.2);
+            -moz-box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.2);
+            box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.2);
+
+            &:disabled {
+                pointer-events: none;
+                color:rgb(170, 170, 170);
+                width: 150px;
+                height: 35px;
+                margin: 5px 10px;
+
+            }
+
+            &:hover {
+                background-color:rgba(46, 171, 220, 0.7);
+                color: #eeecec;
+            }
+
+            p {
+                font-size: 16px;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 1280px) {
+
+    .form-fields {
+        width: 500px;
+        height: 500px;
+
+        .group_input {
+            align-items: flex-start;
+            justify-content: space-between;
+            flex-direction: column;
+
+            input {
+                width: 450px;
+            }
+
+            select {
+                width: 450px;
+            }
+
+            label {
+                width: 300px;
+                margin-left: 10px;
+                margin-top: 20px;
+            }
+        }
+    }
 }
