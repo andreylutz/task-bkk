@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
-import { debounceTime } from 'rxjs/operators';
+import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
 
-import { RequestService } from 'src/app/request.service';
+import { RequestService } from 'src/app/services/request.service';
 
 @Component({
     selector: 'app-form',
@@ -11,33 +11,68 @@ import { RequestService } from 'src/app/request.service';
 })
 
 export class FormComponent implements OnInit {
-    constructor(private svc: RequestService) {}
-    
-    numberControl: FormControl;
+    constructor(private svc: RequestService, public router: Router, private formBuilder: FormBuilder) {}
+
+    form: FormGroup;
+    private formSumitAttempt: boolean;
     comboboxData: any;
 
-
-    ngOnInit() {
-         this.svc.getComboxFields().subscribe(data => {
-            this.comboboxData = data
-         })
-         this.numberControl = new FormControl('18', [ Validators.required, myValidator ]);
-         this.numberControl.valueChanges
-         .pipe(
-            debounceTime(1000)
-         )
-         .subscribe((value) => console.log(value))
-         this.numberControl.statusChanges.subscribe((status) => {
-            console.log(this.numberControl.errors);
-            console.log(status);
-         })
+    isFieldValid(field: string) {
+        return (
+          (!this.form.get(field).valid && this.form.get(field).touched) ||
+          (this.form.get(field).untouched && this.formSumitAttempt)
+        );
+      }
+      
+      displayFieldCss(field: string) {
+        return {
+          'has-error': this.isFieldValid(field),
+          'has-feedback': this.isFieldValid(field)
+        };
+      }
+    
+    get fieldOne() {
+        return this.form.controls.fieldOne as FormControl   
     }
+
+    get fieldSelect() {
+        return this.form.controls.fieldSelect as FormControl   
+    } 
+
+    get fieldCheck() {
+        return this.form.controls.fieldCheck as FormControl   
+    } 
+    
+    ngOnInit(): void {
+        this.svc.getComboxFields().subscribe(data => {
+            this.comboboxData = data
+        })
+
+        this.form = this.formBuilder.group({
+            fieldOne: [null, [Validators.required, myValidator]],
+            fieldSelect: [null, [Validators.required]],
+            fieldCheck: [null, [Validators.required]],
+          });
+    }
+
+    handleSubmit() {
+        this.formSumitAttempt = true;
+        if(this.form.valid) {
+            this.router.navigate(['/main']);
+            console.log(this.form.value)
+        }
+    }
+
+    reset() {
+        this.form.reset();
+        this.formSumitAttempt = false;
+      }
 }
  
 // Функция валидации
 function myValidator(formControl: FormControl) {
 
-    if (formControl.value.length < 18 || formControl.value.length > 120) {
+    if (formControl.value < 18 || formControl.value > 120) {
         return { myValidator: { message: 'Неправельный диапозон' } }
     }
 

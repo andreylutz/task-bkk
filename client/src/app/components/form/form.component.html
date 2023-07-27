@@ -1,9 +1,36 @@
-<form action="">
-    <input [formControl]="numberControl">
-    <select name="" id="">
-        <option *ngFor="let item of comboboxData">{{ item.title }}</option>
-    </select>
-    <input type="checkbox" id="coding" value="coding">
-    <label for="coding">Coding</label>
-    <button type="submit">Далее</button>
+<form class="form-fields" [formGroup]="form">
+    
+    <div class="form-field__one" id="name">
+        <input type="number" formControlName="fieldOne" placeholder="Введите значение">
+        <app-field-error-display 
+        [displayError]="isFieldValid('fieldOne')" 
+        errorMsg="plase inform">
+      </app-field-error-display>
+    </div>
+    
+    <div class="form-field__two">
+        <select class="form-field__combobox" formControlName="fieldSelect" >
+            <option>--select--</option>
+            <option
+            *ngFor="let item of comboboxData;"
+            >{{ item.title }}</option>
+        </select>
+        <app-field-error-display 
+        [displayError]="isFieldValid('fieldSelect')" 
+        errorMsg="plase inform">
+      </app-field-error-display>
+    </div>
+
+    <div class="form-field__three">
+        <input class="form-field__checkbox" type="checkbox" id="check" formControlName="fieldCheck">
+        <label for="check">Согласен на обработку данных</label>
+        <app-field-error-display 
+        [displayError]="isFieldValid('fieldCheck')" 
+        errorMsg="plase inform">
+      </app-field-error-display>
+    </div>
+
+    <div class="from-field__four">
+        <button class="form-field__button" (click)="handleSubmit()" [disabled]="!form.valid">Далее</button>
+    </div>
 </form>
